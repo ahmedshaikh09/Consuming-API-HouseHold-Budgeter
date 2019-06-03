@@ -1,0 +1,60 @@
+﻿@model List<Members>
+
+@{
+    ViewBag.Title = "GetMembers";
+}
+
+@section css {
+    <link rel="stylesheet"
+          href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
+}
+
+@section Scripts {
+    <script type="text/javascript"
+            src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js">
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#sample-datatables').DataTable();
+        });
+    </script>
+}
+<h2>All Members</h2>
+
+<table id="sample-datatables" class="table table-striped" style="text-align : center;">
+    <thead>
+        <tr>
+            <th>User Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (ViewBag.Result != null)
+        {
+            foreach (var record in ViewBag.Result)
+            {
+                <tr>
+                    <td>@record.memberEmail</td>
+
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+@if (ViewBag.Result != null)
+{
+    if (ViewBag.Result.Message != null)
+    {
+        <span>@ViewBag.Result.Message</span>
+    }
+}
+@if (ViewBag.Errors != null)
+{
+    foreach (var error in ViewBag.Errors)
+    {
+        <ul>
+            <li>@error[0]</li>
+        </ul>
+    }
+}
+

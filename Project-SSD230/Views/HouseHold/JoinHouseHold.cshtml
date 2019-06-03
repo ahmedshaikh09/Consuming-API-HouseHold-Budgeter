@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewBag.Title = "JoinHouseHold";
+}
+
+<h2>Join House Hold</h2>
+
+<p>Make sure you were Invited By the Owner Before you try to Join</p>
+
+<div class="col-md-12">
+    <form method="post">
+        @Html.ValidationSummary(false)
+        <button type="submit" class="btn btn-primary">Confirm Join</button>
+    </form>
+</div>
+
+@if (ViewBag.Result != null)
+{
+    if (ViewBag.Result.Message != null)
+    {
+        <span>@ViewBag.Result.Message</span>
+    }
+}
+@if (ViewBag.Errors != null)
+{
+    foreach (var error in ViewBag.Errors)
+    {
+        <ul>
+            <li>@error[0]</li>
+        </ul>
+    }
+}
