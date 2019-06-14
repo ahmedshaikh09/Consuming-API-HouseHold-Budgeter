@@ -74,7 +74,7 @@ namespace Project_SSD230.Controllers
             parameters.Add(new KeyValuePair<string, string>("Title", formData.Title));
             parameters.Add(new KeyValuePair<string, string>("Description", formData.Description));
             parameters.Add(new KeyValuePair<string, string>("CategoryId", formData.CategoryId.ToString()));
-            parameters.Add(new KeyValuePair<string, string>("BankAccountId", formData.CategoryId.ToString()));
+            parameters.Add(new KeyValuePair<string, string>("BankAccountId", id.ToString()));
             parameters.Add(new KeyValuePair<string, string>("TransactionDate", formData.TransactionDate.ToString()));
             parameters.Add(new KeyValuePair<string, string>("Amount", formData.Amount.ToString()));
 
@@ -162,7 +162,6 @@ namespace Project_SSD230.Controllers
             parameters.Add(new KeyValuePair<string, string>("Title", formData.Title));
             parameters.Add(new KeyValuePair<string, string>("Description", formData.Description));
             parameters.Add(new KeyValuePair<string, string>("CategoryId", formData.CategoryId.ToString()));
-            parameters.Add(new KeyValuePair<string, string>("BankAccountId", formData.CategoryId.ToString()));
             parameters.Add(new KeyValuePair<string, string>("TransactionDate", formData.TransactionDate.ToString()));
             parameters.Add(new KeyValuePair<string, string>("Amount", formData.Amount.ToString()));
 
@@ -173,7 +172,7 @@ namespace Project_SSD230.Controllers
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
                 var data = response.Content.ReadAsStringAsync().Result;
-                var houseHold = JsonConvert.DeserializeObject<Transaction>(data);
+                var result = JsonConvert.DeserializeObject<Transaction>(data);
 
                 return RedirectToAction("Index", "HouseHold");
             }
