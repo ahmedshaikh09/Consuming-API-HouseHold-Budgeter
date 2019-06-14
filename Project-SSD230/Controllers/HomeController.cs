@@ -56,7 +56,7 @@ namespace Project_SSD230.Controllers
                 var data = response.Content.ReadAsStringAsync().Result;
                 var result = JsonConvert.DeserializeObject<APIErrorData>(data);
 
-                ViewBag.Result = result;
+                                ViewBag.Result = result;
                 ViewBag.Errors = result.ModelState.Values.ToList();
 
                 return View();
@@ -76,7 +76,8 @@ namespace Project_SSD230.Controllers
 
         [HttpPost]
         public ActionResult Login(LoginDataViewModel formData)
-         {
+
+        {
             if (!ModelState.IsValid)
             {
                 return View();
@@ -114,7 +115,7 @@ namespace Project_SSD230.Controllers
                 var result = JsonConvert.DeserializeObject<APIErrorData>(data);
 
                 ViewBag.Result = result;
-                ViewBag.Errors = result.ModelState.Values.ToList();
+         //       ViewBag.Errors = result.ModelState.Values;
 
                 return View();
             }

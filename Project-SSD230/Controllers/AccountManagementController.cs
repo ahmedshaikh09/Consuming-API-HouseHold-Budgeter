@@ -9,11 +9,10 @@ using System.Web.Mvc;
 
 namespace Project_SSD230.Controllers
 {
-    public class HouseHoldController : Controller
+    public class AccountManagementController : Controller
     {
-        // GET: HouseHold
-
-        public ActionResult Index()
+        // GET: AccountManagement
+        public ActionResult Index(int id)
         {
             var cookie = Request.Cookies["SavedCookie"];
 
@@ -24,7 +23,7 @@ namespace Project_SSD230.Controllers
 
             var token = cookie.Value;
 
-            var url = "http://localhost:56327/api/houseHold/get-all";
+            var url = $"http://localhost:56327/api/bankaccount/getAll/{id}";
 
             var httpClient = new HttpClient();
 
@@ -34,20 +33,20 @@ namespace Project_SSD230.Controllers
             var response = httpClient.GetAsync(url).Result;
 
             var data = response.Content.ReadAsStringAsync().Result;
-            var result = JsonConvert.DeserializeObject<List<HouseHold>>(data);
+            var result = JsonConvert.DeserializeObject<List<BankAccount>>(data);
 
             ViewBag.Result = result;
 
             return View();
         }
 
-        public ActionResult CreateHouseHold()
+        public ActionResult CreateBankAccount()
         {
             return View();
         }
 
         [HttpPost]
-        public ActionResult CreateHouseHold(HouseHoldCreateEditViewModel formData)
+        public ActionResult CreateBankAccount(int id, BankAccountCreateEditViewModel formData)
         {
             if (!ModelState.IsValid)
             {
@@ -63,7 +62,7 @@ namespace Project_SSD230.Controllers
 
             var token = cookie.Value;
 
-            var url = "http://localhost:56327/api/houseHold/create";
+            var url = $"http://localhost:56327/api/bankaccount/create/{id}";
 
 
             var httpClient = new HttpClient();
@@ -83,9 +82,9 @@ namespace Project_SSD230.Controllers
             {
                 var data = response.Content.ReadAsStringAsync().Result;
 
-                var result = JsonConvert.DeserializeObject<HouseHold>(data);
+                var result = JsonConvert.DeserializeObject<BankAccount>(data);
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "HouseHold");
             }
             else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
             {
@@ -102,11 +101,11 @@ namespace Project_SSD230.Controllers
                 return View("Error");
             }
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "HouseHold");
         }
 
         [HttpGet]
-        public ActionResult UpdateHouseHold(int? id)
+        public ActionResult UpdateBankAccount(int? id)
         {
             var cookie = Request.Cookies["SavedCookie"];
 
@@ -117,7 +116,7 @@ namespace Project_SSD230.Controllers
 
             var token = cookie.Value;
 
-            var url = $"http://localhost:56327/api/houseHold/get/{id}";
+            var url = $"http://localhost:56327/api/bankaccount/get/{id}";
 
             var httpClient = new HttpClient();
 
@@ -126,13 +125,13 @@ namespace Project_SSD230.Controllers
 
             var data = httpClient.GetStringAsync(url).Result;
 
-            var result = JsonConvert.DeserializeObject<HouseHoldCreateEditViewModel>(data);
+            var result = JsonConvert.DeserializeObject<BankAccountCreateEditViewModel>(data);
 
             return View(result);
         }
 
         [HttpPost]
-        public ActionResult UpdateHouseHold(int id, HouseHoldCreateEditViewModel formData)
+        public ActionResult UpdateBankAccount(int id, BankAccountCreateEditViewModel formData)
         {
             if (!ModelState.IsValid)
             {
@@ -148,7 +147,7 @@ namespace Project_SSD230.Controllers
 
             var token = cookie.Value;
 
-            var url = $"http://localhost:56327/api/houseHold/edit/{id}";
+            var url = $"http://localhost:56327/api/bankaccount/edit/{id}";
 
             var httpClient = new HttpClient();
 
@@ -167,9 +166,9 @@ namespace Project_SSD230.Controllers
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
                 var data = response.Content.ReadAsStringAsync().Result;
-                var houseHold = JsonConvert.DeserializeObject<HouseHold>(data);
+                var houseHold = JsonConvert.DeserializeObject<BankAccount>(data);
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "HouseHold");
             }
             else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
             {
@@ -185,11 +184,16 @@ namespace Project_SSD230.Controllers
             {
                 return View("Error");
             }
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "HouseHold");
         }
 
-        [HttpGet]
-        public ActionResult GetMembers(int? id)
+        public ActionResult DeleteBankAccount()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult DeleteBankAccount(int id)
         {
             var cookie = Request.Cookies["SavedCookie"];
 
@@ -200,7 +204,53 @@ namespace Project_SSD230.Controllers
 
             var token = cookie.Value;
 
-            var url = $"http://localhost:56327/api/houseHold/{id}/get-all-members";
+            var url = $"http://localhost:56327/api/bankaccount/delete/{id}";
+
+            var httpClient = new HttpClient();
+
+            httpClient.DefaultRequestHeaders.Add("Authorization",
+            $"Bearer {token}");
+
+            var parameters = new List<KeyValuePair<string, string>>();
+
+            var encodedParameters = new FormUrlEncodedContent(parameters);
+
+            var response = httpClient.PostAsync(url, encodedParameters).Result;
+
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                //Success. Do appropriate action.
+                return RedirectToAction("Index", "HouseHold");
+            }
+            else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+            {
+                var data = response.Content.ReadAsStringAsync().Result;
+                var result = JsonConvert.DeserializeObject<APIErrorData>(data);
+
+                ViewBag.Result = result;
+                ViewBag.Errors = result.ModelState.Values.ToList();
+
+                return View();
+            }
+            else if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+            {
+                return View("Error");
+            }
+            return RedirectToAction("Index", "HouseHold");
+        }
+
+        public ActionResult UpdateBalance(int id)
+        {
+            var cookie = Request.Cookies["SavedCookie"];
+
+            if (cookie == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+
+            var token = cookie.Value;
+
+            var url = $"http://localhost:56327/api/bankaccount/calculate/{id}";
 
             var httpClient = new HttpClient();
 
@@ -211,125 +261,12 @@ namespace Project_SSD230.Controllers
 
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
+
                 var data = response.Content.ReadAsStringAsync().Result;
-                var result = JsonConvert.DeserializeObject<List<Members>>(data);
 
-                ViewBag.Members = result;
-
-                return View();
-            }
-            else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
-            {
-                var data = response.Content.ReadAsStringAsync().Result;
-                var result = JsonConvert.DeserializeObject<APIErrorData>(data);
-
-                ViewBag.ErrorMsg = result;
-                ViewBag.Errors = result.ModelState.Values.ToList();
+                ViewBag.Balance = data;
 
                 return View();
-            }
-            else if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
-            {
-                return View("Error");
-            }
-
-            return View();
-
-        }
-
-        public ActionResult InviteMembers()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public ActionResult InviteMembers(int id, InviteMembersViewModel formData)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View();
-            }
-
-            var cookie = Request.Cookies["SavedCookie"];
-
-            if (cookie == null)
-            {
-                return RedirectToAction("Login", "Home");
-            }
-
-            var token = cookie.Value;
-
-            var url = $"http://localhost:56327/api/houseHold/{id}/invite";
-
-            var httpClient = new HttpClient();
-
-            httpClient.DefaultRequestHeaders.Add("Authorization",
-            $"Bearer {token}");
-
-            var parameters = new List<KeyValuePair<string, string>>();
-
-            parameters.Add(new KeyValuePair<string, string>("UserEmail", formData.UserEmail));
-
-            var encodedParameters = new FormUrlEncodedContent(parameters);
-
-            var response = httpClient.PostAsync(url, encodedParameters).Result;
-
-            if (response.StatusCode == System.Net.HttpStatusCode.OK)
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
-            {
-                var data = response.Content.ReadAsStringAsync().Result;
-                var result = JsonConvert.DeserializeObject<APIErrorData>(data);
- 
-
-                ViewBag.Result = result;
-                ViewBag.Errors =  result.ModelState.Values.ToList();
-
-                return View();
-            }
-            else if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
-            {
-                return View("Error");
-            }
-
-            return View();
-        }
-
-        public ActionResult JoinHouseHold()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public ActionResult JoinHouseHold(int id)
-        {
-            var cookie = Request.Cookies["SavedCookie"];
-
-            if (cookie == null)
-            {
-                return RedirectToAction("Login", "Home");
-            }
-
-            var token = cookie.Value;
-
-            var url = $"http://localhost:56327/api/houseHold/{id}/join";
-
-            var httpClient = new HttpClient();
-
-            httpClient.DefaultRequestHeaders.Add("Authorization",
-            $"Bearer {token}");
-
-            var parameters = new List<KeyValuePair<string, string>>();
-
-            var encodedParameters = new FormUrlEncodedContent(parameters);
-
-            var response = httpClient.PostAsync(url, encodedParameters).Result;
-
-            if (response.StatusCode == System.Net.HttpStatusCode.OK)
-            {
-                return RedirectToAction(nameof(Index));
             }
             else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
             {
@@ -347,110 +284,6 @@ namespace Project_SSD230.Controllers
             }
 
             return View();
-        }
-
-        public ActionResult LeaveHouseHold()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public ActionResult LeaveHouseHold(int id)
-        {
-            var cookie = Request.Cookies["SavedCookie"];
-
-            if (cookie == null)
-            {
-                return RedirectToAction("Login", "Home");
-            }
-
-            var token = cookie.Value;
-
-            var url = $"http://localhost:56327/api/houseHold/{id}/leave";
-
-            var httpClient = new HttpClient();
-
-            httpClient.DefaultRequestHeaders.Add("Authorization",
-            $"Bearer {token}");
-
-            var parameters = new List<KeyValuePair<string, string>>();
-
-            var encodedParameters = new FormUrlEncodedContent(parameters);
-
-            var response = httpClient.PostAsync(url, encodedParameters).Result;
-
-            if (response.StatusCode == System.Net.HttpStatusCode.OK)
-            {
-                //Success. Do appropriate action.
-                return RedirectToAction(nameof(Index));
-            }
-            else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
-            {
-                var data = response.Content.ReadAsStringAsync().Result;
-                var result = JsonConvert.DeserializeObject<APIErrorData>(data);
-
-                ViewBag.Result = result;
-                ViewBag.Errors = result.ModelState.Values.ToList();
-
-                return View();
-            }
-            else if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
-            {
-                return View("Error");
-            }
-            return View();
-        }
-
-        public ActionResult DeleteHouseHold()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public ActionResult DeleteHouseHold(int id)
-        {
-            var cookie = Request.Cookies["SavedCookie"];
-
-            if (cookie == null)
-            {
-                return RedirectToAction("Login", "Home");
-            }
-
-            var token = cookie.Value;
-
-            var url = $"http://localhost:56327/api/houseHold/delete/{id}";
-
-            var httpClient = new HttpClient();
-
-            httpClient.DefaultRequestHeaders.Add("Authorization",
-            $"Bearer {token}");
-
-            var parameters = new List<KeyValuePair<string, string>>();
-
-            var encodedParameters = new FormUrlEncodedContent(parameters);
-
-            var response = httpClient.PostAsync(url, encodedParameters).Result;
-
-            if (response.StatusCode == System.Net.HttpStatusCode.OK)
-            {
-                //Success. Do appropriate action.
-                return RedirectToAction(nameof(Index));
-            }
-            else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
-            {
-                var data = response.Content.ReadAsStringAsync().Result;
-                var result = JsonConvert.DeserializeObject<APIErrorData>(data);
-
-                ViewBag.Result = result;
-                ViewBag.Errors = result.ModelState.Values.ToList();
-
-                return View();
-            }
-            else if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
-            {
-                return View("Error");
-            }
-            return RedirectToAction(nameof(Index));
         }
     }
 }

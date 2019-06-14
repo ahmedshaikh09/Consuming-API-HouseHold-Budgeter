@@ -23,8 +23,8 @@
 <hr />
 <a class="btn btn-primary" href="@Url.Action("CreateHouseHold", "HouseHold")">Create New HouseHold</a>
 <hr />
-<table id="sample-datatables" class="table table-striped" style="text-align : center;">
-    <thead>
+<table id="sample-datatables" class="table table-striped" style=" overflow-x: auto; text-align : center;">
+    <thead >
         <tr>
             <th>Id</th>
             <th>Name</th>
@@ -36,9 +36,13 @@
             <th></th>
             <th></th>
             <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
         </tr>
     </thead>
-    <tbody>
+    <tbody >
         @if (ViewBag.Result != null)
         {
             foreach (var record in ViewBag.Result)
@@ -66,8 +70,24 @@
             <td>
                 <a href="@Url.Action("LeaveHouseHold", "HouseHold", new { id = record.Id })">Leave</a>
             </td>
+            <td>
+                <a href="@Url.Action("DeleteHouseHold", "HouseHold", new { id = record.Id })">Delete</a>
+            </td>
+            <td>
+                <a href="@Url.Action("Index", "Category", new { id = record.Id })">View Categories</a>
+            </td>
+            <td>
+                <a href="@Url.Action("CreateCategory", "Category", new { id = record.Id })">Create Category</a>
+            </td>
+            <td>
+                <a href="@Url.Action("Index", "AccountManagement", new { id = record.Id })">View Bank Accounts</a>
+            </td>
+            <td>
+                <a href="@Url.Action("CreateBankAccount", "AccountManagement", new { id = record.Id })">Create Bank Account </a>
+            </td>
         </tr>
             }
         }
-        </tbody>
+    </tbody>
 </table>
+

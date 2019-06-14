@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewBag.Title = "DeleteBankAccount";
+}
+
+<h1>Deleting Bank Account</h1>
+
+<h2>Are you sure you want to Delete it?</h2>
+
+<div class="col-md-12">
+    <form method="post">
+        @Html.ValidationSummary(false)
+        <button type="submit" class="btn btn-danger">Confirm Delete</button>
+    </form>
+</div>
+
+@if (ViewBag.Result != null)
+{
+    if (ViewBag.Result.Message != null)
+    {
+        <span>@ViewBag.Result.Message</span>
+    }
+}
+@if (ViewBag.Errors != null)
+{
+    foreach (var error in ViewBag.Errors)
+    {
+        <ul>
+            <li>@error[0]</li>
+        </ul>
+    }
+}

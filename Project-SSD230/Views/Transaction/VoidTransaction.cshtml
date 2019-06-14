@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewBag.Title = "VoidTransaction";
+}
+
+<h2>Void Transaction</h2>
+
+<h2>Are you sure you want to Void it?</h2>
+
+<div class="col-md-12">
+    <form method="post">
+        @Html.ValidationSummary(false)
+        <button type="submit" class="btn btn-danger">Confirm Void</button>
+    </form>
+</div>
+
+@if (ViewBag.Result != null)
+{
+    if (ViewBag.Result.Message != null)
+    {
+        <span>@ViewBag.Result.Message</span>
+    }
+}
+@if (ViewBag.Errors != null)
+{
+    foreach (var error in ViewBag.Errors)
+    {
+        <ul>
+            <li>@error[0]</li>
+        </ul>
+    }
+}

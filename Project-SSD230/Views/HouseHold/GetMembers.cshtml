@@ -28,9 +28,9 @@
         </tr>
     </thead>
     <tbody>
-        @if (ViewBag.Result != null)
+        @if (ViewBag.Members != null)
         {
-            foreach (var record in ViewBag.Result)
+            foreach (var record in ViewBag.Members)
             {
                 <tr>
                     <td>@record.memberEmail</td>
@@ -41,11 +41,11 @@
     </tbody>
 </table>
 
-@if (ViewBag.Result != null)
+@if (ViewBag.ErrorMsg != null)
 {
-    if (ViewBag.Result.Message != null)
+    if (ViewBag.ErrorMsg.Message != null)
     {
-        <span>@ViewBag.Result.Message</span>
+        <span>@ViewBag.ErrorMsg.Message</span>
     }
 }
 @if (ViewBag.Errors != null)

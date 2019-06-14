@@ -1,0 +1,27 @@
+﻿@{
+    ViewBag.Title = "UpdateBalance";
+}
+
+<h2>Account Balance</h2>
+
+<hr />
+
+<p>Updated Bank Account Balance is : @ViewBag.Balance</p>
+
+
+@if (ViewBag.Result != null)
+{
+    if (ViewBag.Result.Message != null)
+    {
+        <span>@ViewBag.Result.Message</span>
+    }
+}
+@if (ViewBag.Errors != null)
+{
+    foreach (var error in ViewBag.Errors)
+    {
+        <ul>
+            <li>@error[0]</li>
+        </ul>
+    }
+}

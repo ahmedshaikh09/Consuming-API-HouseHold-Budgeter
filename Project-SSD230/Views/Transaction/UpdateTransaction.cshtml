@@ -1,0 +1,36 @@
+﻿@model TransactionCreateEditViewModel
+
+@{
+    ViewBag.Title = "UpdateTransaction";
+}
+
+<h2>Update Transaction</h2>
+
+<div class="col-md-12">
+    <form method="post">
+        @Html.ValidationSummary(false)
+        @Html.TextBoxFor(p => p.Title, new { @class = "form-control", placeholder = "Title" })
+        @Html.TextBoxFor(p => p.Description, new { @class = "form-control", placeholder = "Description" })<br />
+        @Html.TextBoxFor(p => p.Amount, new { @class = "form-control", type = "decimal", placeholder = "Amount" })<br />
+        @Html.TextBoxFor(p => p.TransactionDate, new { @class = "form-control", type = "date", placeholder = "Transaction Date" })<br />
+        @Html.TextBoxFor(p => p.CategoryId, new { @class = "form-control", placeholder = "Category Name" })<br />
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+@if (ViewBag.Result != null)
+{
+    if (ViewBag.Result.Message != null)
+    {
+        <span>@ViewBag.Result.Message</span>
+    }
+}
+@if (ViewBag.Errors != null)
+{
+    foreach (var error in ViewBag.Errors)
+    {
+        <ul>
+            <li>@error[0]</li>
+        </ul>
+    }
+}

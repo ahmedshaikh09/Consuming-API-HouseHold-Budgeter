@@ -1,0 +1,59 @@
+﻿@model List<Category>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+@section css {
+    <link rel="stylesheet"
+          href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
+}
+
+@section Scripts {
+    <script type="text/javascript"
+            src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js">
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#sample-datatables').DataTable();
+        });
+    </script>
+}
+    <h2>All Categories</h2>
+<hr />
+
+<table id="sample-datatables" class="table table-striped" style="text-align : center;">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Created</th>
+            <th>Updated</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (ViewBag.Result != null)
+        {
+            foreach (var record in ViewBag.Result)
+            {
+                <tr>
+                    <td>@record.Id</td>
+                    <td>@record.Name</td>
+                    <td>@record.Description</td>
+                    <td>@record.DateCreated</td>
+                    <td>@record.DateUpdated</td>
+
+                    <td>
+                        <a href="@Url.Action("UpdateCategory", "Category", new { id = record.Id })">Edit</a>
+                    </td>
+                    <td>
+                        <a href="@Url.Action("DeleteCategory", "Category", new { id = record.Id })">Delete</a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

@@ -136,12 +136,19 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\AccountManagementController.cs" />
+    <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HouseHoldController.cs" />
+    <Compile Include="Controllers\TransactionController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\APIErrorData.cs" />
+    <Compile Include="Models\BankAccount.cs" />
+    <Compile Include="Models\BankAccountCreateEditViewModel.cs" />
+    <Compile Include="Models\Category.cs" />
+    <Compile Include="Models\CategoryCreateEditViewModel.cs" />
     <Compile Include="Models\ChangePasswordViewModel.cs" />
     <Compile Include="Models\ForgotPasswordViewModel.cs" />
     <Compile Include="Models\HouseHold.cs" />
@@ -152,6 +159,8 @@
     <Compile Include="Models\RegisterDataViewModel.cs" />
     <Compile Include="Models\Members.cs" />
     <Compile Include="Models\ResetPasswordViewModel.cs" />
+    <Compile Include="Models\Transaction.cs" />
+    <Compile Include="Models\TransactionCreateEditViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -2091,6 +2100,21 @@
     <Content Include="Views\Home\ChangePassword.cshtml" />
     <Content Include="Views\Home\ForgotPassword.cshtml" />
     <Content Include="Views\Home\ResetPassword.cshtml" />
+    <Content Include="Views\Category\CreateCategory.cshtml" />
+    <Content Include="Views\Category\Index.cshtml" />
+    <Content Include="Views\Category\UpdateCategory.cshtml" />
+    <Content Include="Views\Category\DeleteCategory.cshtml" />
+    <Content Include="Views\HouseHold\DeleteHouseHold.cshtml" />
+    <Content Include="Views\AccountManagement\CreateBankAccount.cshtml" />
+    <Content Include="Views\AccountManagement\Index.cshtml" />
+    <Content Include="Views\AccountManagement\UpdateBankAccount.cshtml" />
+    <Content Include="Views\AccountManagement\DeleteBankAccount.cshtml" />
+    <Content Include="Views\AccountManagement\UpdateBalance.cshtml" />
+    <Content Include="Views\Transaction\Index.cshtml" />
+    <Content Include="Views\Transaction\CreateTransaction.cshtml" />
+    <Content Include="Views\Transaction\UpdateTransaction.cshtml" />
+    <Content Include="Views\Transaction\DeleteTransaction.cshtml" />
+    <Content Include="Views\Transaction\VoidTransaction.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,0 +1,33 @@
+﻿
+@{
+    ViewBag.Title = "DeleteHouseHold";
+}
+
+<h2>Delete HouseHold</h2>
+
+
+<p>Only Owners can delete House Holds, if you are just a member try leaving.</p>
+
+<div class="col-md-12">
+    <form method="post">
+        @Html.ValidationSummary(false)
+        <button type="submit" class="btn btn-danger">Delete</button>
+    </form>
+</div>
+
+@if (ViewBag.Result != null)
+{
+    if (ViewBag.Result.Message != null)
+    {
+        <span>@ViewBag.Result.Message</span>
+    }
+}
+@if (ViewBag.Errors != null)
+{
+    foreach (var error in ViewBag.Errors)
+    {
+        <ul>
+            <li>@error[0]</li>
+        </ul>
+    }
+}
